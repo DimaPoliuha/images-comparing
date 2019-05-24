@@ -1,21 +1,25 @@
-MIT License
+SIFT LICENSE CONDITIONS
 
-Copyright (c) 2019 Dmitry Poliuha
+Copyright (2005), University of British Columbia.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This software for the detection of invariant keypoints is being made
+available for individual research use only.  Any commercial use or any
+redistribution of this software requires a license from the University
+of British Columbia.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The following patent has been issued for methods embodied in this
+software: "Method and apparatus for identifying scale invariant
+features in an image and use of same for locating an object in an
+image," David G. Lowe, US Patent 6,711,293 (March 23,
+2004). Provisional application filed March 8, 1999. Asignee: The
+University of British Columbia.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+For further details on obtaining a commercial license, contact David
+Lowe (lowe@cs.ubc.ca) or the University-Industry Liaison Office of the
+University of British Columbia.
+
+THE UNIVERSITY OF BRITISH COLUMBIA MAKES NO REPRESENTATIONS OR
+WARRANTIES OF ANY KIND CONCERNING THIS SOFTWARE.
+
+This license file must be retained with all copies of the software,
+including any modified or derivative versions.
