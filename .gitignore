@@ -1,3 +1,4 @@
 .idea
 venv
 dev_dataset
+*.pyc
