@@ -9,8 +9,7 @@ class ImageWrapper:
         self.compress_image()
 
     def compress_image(self):
-        if self.name == '15.jpg':
-            self.image_obj = self.image_obj.resize((100, 100), Image.ANTIALIAS)
+        self.image_obj = self.image_obj.resize((100, 100), Image.ANTIALIAS)
 
 
 class ImagesContainer:
