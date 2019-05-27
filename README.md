@@ -17,4 +17,4 @@ python solution.py [-h] --path PATH
 ```
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[LICENSE](https://github.com/DmitryPoliuha/images-comparing-numpy-sift/blob/master/LICENSE)
