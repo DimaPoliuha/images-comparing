@@ -12,12 +12,15 @@ class SIFT:
 
         self.gaussian_pyramid = self.get_gaussian_pyramid()
         self.differences_of_gaussian = self.get_differences_of_gaussian()
+        self.save_dog()
+        # self.get_local_extremum()
 
     def get_gaussian_pyramid(self):
         pyramid = []
         layer = []
         radius = self.sigma
-        for i in range(10):
+        # for i in range(10):
+        for i in range(8):
             size = int(512 / (2 ** i))
             temp_img = self.image.image.resize((size, size), Image.BILINEAR)
             for j in range(self.count_gaussian_per_octave + 2):
@@ -42,3 +45,54 @@ class SIFT:
             differences_of_gaussian.append(differences_layer)
             differences_layer = []
         return differences_of_gaussian
+
+    def get_local_extremum(self):
+        extrems = []
+        for layer in self.differences_of_gaussian:
+            shape = layer[0].shape[0]
+            for img_index in range(1, len(layer) - 1):
+                for i in range(1, shape - 1):
+                    for j in range(1, shape - 1):
+                        if all(layer[img_index][i, j] > x for x in [
+                                layer[img_index][i-1, j],
+                                layer[img_index][i+1, j],
+                                layer[img_index][i, j-1],
+                                layer[img_index][i, j+1],
+                                layer[img_index][i+1, j+1],
+                                layer[img_index][i+1, j-1],
+                                layer[img_index][i-1, j+1],
+                                layer[img_index][i-1, j-1],
+
+                                layer[img_index-1][i, j],
+                                layer[img_index-1][i - 1, j],
+                                layer[img_index-1][i + 1, j],
+                                layer[img_index-1][i, j - 1],
+                                layer[img_index-1][i, j + 1],
+                                layer[img_index-1][i + 1, j + 1],
+                                layer[img_index-1][i + 1, j - 1],
+                                layer[img_index-1][i - 1, j + 1],
+                                layer[img_index-1][i - 1, j - 1],
+
+                                layer[img_index + 1][i, j],
+                                layer[img_index + 1][i - 1, j],
+                                layer[img_index + 1][i + 1, j],
+                                layer[img_index + 1][i, j - 1],
+                                layer[img_index + 1][i, j + 1],
+                                layer[img_index + 1][i + 1, j + 1],
+                                layer[img_index + 1][i + 1, j - 1],
+                                layer[img_index + 1][i - 1, j + 1],
+                                layer[img_index + 1][i - 1, j - 1]
+                        ]
+                        ):
+                            extrems.append(layer[img_index][i, j])
+        print(len(extrems))
+
+    def save_dog(self):
+        t = 0
+        i = 0
+        for layer in self.differences_of_gaussian:
+            for image_arr in layer:
+                image = Image.fromarray(image_arr)
+                image.save(f"dev_dataset/dog/{i}{t}.jpg")
+                i += 1
+            t += 1
