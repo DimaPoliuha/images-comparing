@@ -13,14 +13,15 @@ class SIFT:
         self.gaussian_pyramid = self.get_gaussian_pyramid()
         self.differences_of_gaussian = self.get_differences_of_gaussian()
         self.save_dog()
-        # self.get_local_extremum()
+        self.get_local_extremum()
 
     def get_gaussian_pyramid(self):
         pyramid = []
         layer = []
         radius = self.sigma
         # for i in range(10):
-        for i in range(8):
+        # for i in range(8):
+        for i in range(4):
             size = int(512 / (2 ** i))
             temp_img = self.image.image.resize((size, size), Image.BILINEAR)
             for j in range(self.count_gaussian_per_octave + 2):
@@ -46,46 +47,26 @@ class SIFT:
             differences_layer = []
         return differences_of_gaussian
 
+    def check_maximum(self, layer, x, y, img_index):
+        val = layer[img_index][x, y]
+        for k in range(-1, 2):
+            for i in range(-1, 2):
+                for j in range(-1, 2):
+                    if val < layer[img_index - k][i, j]:
+                        return None
+        return val
+
     def get_local_extremum(self):
-        extrems = []
+        maximums = []
+        minimums = []
         for layer in self.differences_of_gaussian:
             shape = layer[0].shape[0]
             for img_index in range(1, len(layer) - 1):
-                for i in range(1, shape - 1):
-                    for j in range(1, shape - 1):
-                        if all(layer[img_index][i, j] > x for x in [
-                                layer[img_index][i-1, j],
-                                layer[img_index][i+1, j],
-                                layer[img_index][i, j-1],
-                                layer[img_index][i, j+1],
-                                layer[img_index][i+1, j+1],
-                                layer[img_index][i+1, j-1],
-                                layer[img_index][i-1, j+1],
-                                layer[img_index][i-1, j-1],
-
-                                layer[img_index-1][i, j],
-                                layer[img_index-1][i - 1, j],
-                                layer[img_index-1][i + 1, j],
-                                layer[img_index-1][i, j - 1],
-                                layer[img_index-1][i, j + 1],
-                                layer[img_index-1][i + 1, j + 1],
-                                layer[img_index-1][i + 1, j - 1],
-                                layer[img_index-1][i - 1, j + 1],
-                                layer[img_index-1][i - 1, j - 1],
-
-                                layer[img_index + 1][i, j],
-                                layer[img_index + 1][i - 1, j],
-                                layer[img_index + 1][i + 1, j],
-                                layer[img_index + 1][i, j - 1],
-                                layer[img_index + 1][i, j + 1],
-                                layer[img_index + 1][i + 1, j + 1],
-                                layer[img_index + 1][i + 1, j - 1],
-                                layer[img_index + 1][i - 1, j + 1],
-                                layer[img_index + 1][i - 1, j - 1]
-                        ]
-                        ):
-                            extrems.append(layer[img_index][i, j])
-        print(len(extrems))
+                for x in range(1, shape - 1):
+                    for y in range(1, shape - 1):
+                        if self.check_maximum(layer, x, y, img_index) is not None:
+                            maximums.append(layer[img_index][x, y])
+        print(len(maximums) + len(minimums))
 
     def save_dog(self):
         t = 0
