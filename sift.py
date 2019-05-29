@@ -47,13 +47,21 @@ class SIFT:
             differences_layer = []
         return differences_of_gaussian
 
-    def check_maximum(self, layer, x, y, img_index):
+    def check_extremum(self, layer, x, y, img_index, type_check):
         val = layer[img_index][x, y]
         for k in range(-1, 2):
             for i in range(-1, 2):
                 for j in range(-1, 2):
-                    if val < layer[img_index - k][i, j]:
-                        return None
+                    if k == i == j == 0:
+                        continue
+                    if type_check == 'max':
+                        if val <= layer[img_index + k][x + i, y + j]:
+                            return None
+                    elif type_check == 'min':
+                        if val >= layer[img_index + k][x + i, y + j]:
+                            return None
+                    else:
+                        raise Exception('Unknown type check')
         return val
 
     def get_local_extremum(self):
@@ -64,9 +72,11 @@ class SIFT:
             for img_index in range(1, len(layer) - 1):
                 for x in range(1, shape - 1):
                     for y in range(1, shape - 1):
-                        if self.check_maximum(layer, x, y, img_index) is not None:
+                        if self.check_extremum(layer, x, y, img_index, 'max') is not None:
                             maximums.append(layer[img_index][x, y])
-        print(len(maximums) + len(minimums))
+                        if self.check_extremum(layer, x, y, img_index, 'min') is not None:
+                            minimums.append(layer[img_index][x, y])
+        print(len(maximums), len(minimums))
 
     def save_dog(self):
         t = 0
