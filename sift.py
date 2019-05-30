@@ -8,10 +8,13 @@ np.seterr(all='ignore')
 class SIFT:
     def __init__(self, image):
         self.image = image
-        # self.sigma = 1.6
-        self.sigma = 0.8
+        self.sigma = 1.6
+        # self.sigma = 0.8
         self.k = math.sqrt(2)
-        self.octaves_count = 4
+
+        self.sigma = self.sigma * self.k ** 3
+
+        self.octaves_count = 1  # 4
         self.count_scales_per_octave = 3
         self.threshold = 0.015
 
@@ -19,12 +22,14 @@ class SIFT:
         self.differences_of_gaussian = self.get_differences_of_gaussian()
         # self.save_dog()
         self.extremes = self.get_local_extremum()
-        print(len(self.extremes))
         self.discard_low_contrast_points_initial()
         self.extremes = self.key_point_interpolation()
         self.discard_low_contrast_points()
         self.discard_points_on_edges()
-        print(len(self.extremes))
+
+        self.images_gradient_x, self.images_gradient_y = self.compute_gradients()
+        self.extremes = self.compute_key_points_reference_orientation()
+        self.descriptor = self.construct_key_point_descriptor()
 
     def get_gaussian_pyramid(self):
         pyramid = []
@@ -173,6 +178,31 @@ class SIFT:
             tr_H = H.trace() ** 2 / np.linalg.det(H)
             if tr_H >= check:
                 self.extremes.pop(extrema_index)
+
+    def compute_gradients(self):
+        images_gradient_x = []
+        images_gradient_y = []
+        for octave in self.gaussian_pyramid:
+            for image in octave:
+                gradients = np.gradient(image)
+                images_gradient_x.append(gradients[0])
+                images_gradient_y.append(gradients[1])
+        return images_gradient_x, images_gradient_y
+
+    def compute_key_points_reference_orientation(self):
+        lambda_ori = 1.5
+        n_bins = 36
+        for keypoint in self.extremes:
+            (octave_i, scale_i, m, n, sigma, x, y, omega) = keypoint
+            shape = self.differences_of_gaussian[octave_i][scale_i].shape[0]
+            if (3 * lambda_ori * sigma <= x <= shape - 3 * lambda_ori * sigma) and (3 * lambda_ori * sigma <= y <= shape - 3 * lambda_ori * sigma):
+                for k in range(n_bins + 1):
+                    pass
+        return self.extremes
+
+
+    def construct_key_point_descriptor(self):
+        pass
 
     def save_dog(self):
         t = 0
