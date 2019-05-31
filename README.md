@@ -1,6 +1,6 @@
 # images-comparing-numpy-sift
 
-Implementation of SIFT algorithm for finding similar images with numpy
+Implementation of key point extraction part of SIFT algorithm for finding similar images
 
 Steps of SIFT algorithm described in [original paper](https://www.cs.ubc.ca/~lowe/papers/ijcv04.pdf) and in [IPOL paper](http://www.ipol.im/pub/art/2014/82/article.pdf)
 
