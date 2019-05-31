@@ -4,6 +4,10 @@ from structures.images_structures import ImagesContainer
 
 
 def argument_parsing():
+    """
+    Command line arguments parsing
+    :return: images path
+    """
     parser = argparse.ArgumentParser(description='First test task on images similarity.')
     parser.add_argument('--path', required=True, help='folder with images')
     args = parser.parse_args()
@@ -11,10 +15,15 @@ def argument_parsing():
 
 
 def compare(files_paths, filenames):
+    """
+    Collects all images, detects key points and compare images
+    :param files_paths:
+    :param filenames:
+    :return:
+    """
     container = ImagesContainer(files_paths, filenames)
-    # for i in range(len(container.images)):
-    #     for j in range(i + 1, len(container.images)):
-    #         compare_imgs(i, j)
+    container.compute_images_key_points()
+    container.compare_images()
 
 
 if __name__ == '__main__':
